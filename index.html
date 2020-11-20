@@ -1,10 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Library</title>
-</head>
-<body>
-  <h1>Welcome to the Library</h1>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Library</title>
+    <link rel="stylesheet" href="public/stylesheets/tailwind.css" type="text/css" media="all" />
+  </head>
+  <body class="text-gray-800">
+    <header class="flex items-stretch justify-between bg-gray-100 shadow-sm rounded-b-md">
+      <h1 class="w-auto h-full px-6 py-2 text-4xl font-semibold tracking-wide text-white uppercase bg-purple-600 rounded-r-md">
+        Library
+      </h1>
+      <div class="flex flex-col items-center justify-between overflow-hidden font-semibold text-white uppercase shadow-md rounded-l-md">
+        <span class="w-full px-6 py-1 text-xs bg-purple-600">Progress</span>
+        <span class="flex items-center justify-center w-full h-full text-lg bg-green-500">80%</span>
+      </div>
+    </header>
+  </body>
 </html>

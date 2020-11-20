@@ -1,9 +1,4 @@
-function Book(
-  title = "Placeholder",
-  author = "Placeholder",
-  numPages = Math.round(Math.random() * 200),
-  currentPage = 0
-) {
+function Book(title = "Placeholder", author = "Placeholder", numPages = 1, currentPage = 0) {
   this.title = title;
   this.author = author;
   this.numPages = numPages;
@@ -59,4 +54,3 @@ Library.prototype.totalPages = function () {
 Library.prototype.progress = function () {
   return ((this.pagesRead() * 100.0) / this.totalPages()).toFixed(2);
 };
-

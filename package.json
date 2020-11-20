@@ -1,0 +1,27 @@
+{
+  "name": "library",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "postcss app/stylesheets/tailwind.css -o public/stylesheets/tailwind.css",
+    "watch": "postcss app/stylesheets/tailwind.css --watch -o public/stylesheets/tailwind.css"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rankoliang/library.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rankoliang/library/issues"
+  },
+  "homepage": "https://github.com/rankoliang/library#readme",
+  "devDependencies": {
+    "autoprefixer": "^10.0.2",
+    "postcss": "^8.1.8",
+    "postcss-cli": "^8.3.0",
+    "tailwindcss": "^2.0.1"
+  }
+}
