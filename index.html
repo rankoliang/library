@@ -6,15 +6,141 @@
     <title>Library</title>
     <link rel="stylesheet" href="public/stylesheets/tailwind.css" type="text/css" media="all" />
   </head>
-  <body class="text-gray-800">
-    <header class="flex items-stretch justify-between bg-gray-100 shadow-sm rounded-b-md">
-      <h1 class="w-auto h-full px-6 py-2 text-4xl font-semibold tracking-wide text-white uppercase bg-purple-600 rounded-r-md">
+  <body class="text-gray-800 bg-gray-50">
+    <header class="flex items-stretch justify-between flex-nowrap text-gray-50 rounded-b-md">
+      <h1 class="w-auto h-full px-6 py-2 text-4xl font-semibold tracking-wide uppercase bg-purple-600 rounded-br-md">
         Library
       </h1>
-      <div class="flex flex-col items-center justify-between overflow-hidden font-semibold text-white uppercase shadow-md rounded-l-md">
-        <span class="w-full px-6 py-1 text-xs bg-purple-600">Progress</span>
-        <span class="flex items-center justify-center w-full h-full text-lg bg-green-500">80%</span>
+      <div
+        class="flex flex-col items-center justify-between overflow-hidden font-semibold uppercase shadow-md rounded-bl-md"
+      >
+        <span class="flex justify-center w-full px-6 py-1 text-xs text-center bg-green-500">Progress</span>
+        <span class="flex items-center justify-center w-full h-full text-lg text-green-500 bg-white">80%</span>
       </div>
     </header>
+    <main class="m-auto">
+      <div
+        id="books"
+        class="max-w-lg p-6 m-auto sm:max-w-4xl lg:max-w-max grid grid-cols-1 sm:grid-cols-2 gap-4 lg:grid-cols-4 2xl:grid-cols-6"
+      >
+        <button
+          class="text-gray-400 border-gray-300 cursor-pointer hover:bg-gray-50 card hover:text-gray-500 focus:outline-none focus:bg-gray-100"
+        >
+          <span class="font-semibold text-center text-9xl">+</span>
+          <h3 class="text-4xl font-semibold tracking-tight text-center capitalize">Add book</h3>
+        </button>
+        <div class="relative pb-6 border-gray-300 card">
+          <svg
+            class="h-48 m-auto"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
+            />
+          </svg>
+          <h2 class="text-2xl font-semibold text-gray-500 truncate lg:text-base">The Lord of the Rings</h2>
+          <span class="italic font-light text-gray-400 truncate lg:text-sm">J.R.R. Tolkien</span>
+          <div class="absolute left-0 flex justify-between w-full px-2 text-sm top-2">
+            <button class="hover:text-black focus:outline-none">
+              <svg
+                class="w-4 h-4"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+                >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+                  ></path>
+              </svg>
+            </button>
+            <span><span class="text-gray-400">0</span>/300</span>
+          </div>
+        </div>
+        <div class="relative pb-6 border-yellow-500 card">
+          <svg
+            class="h-48 m-auto"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
+            />
+          </svg>
+          <h2 class="text-2xl font-semibold text-gray-500 truncate lg:text-base">The Lord of the Rings</h2>
+          <span class="italic font-light text-gray-400 truncate lg:text-sm">J.R.R. Tolkien</span>
+          <div class="absolute left-0 flex justify-between w-full px-2 text-sm top-2">
+            <button class="hover:text-black focus:outline-none">
+              <svg
+                class="w-4 h-4"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+                >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+                  ></path>
+              </svg>
+            </button>
+            <span class="uppercase"><span class="text-yellow-600">150</span>/300</span>
+          </div>
+        </div>
+        <div class="relative pb-6 border-green-400 card">
+          <svg
+            class="h-48 m-auto"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
+            />
+          </svg>
+          <h2 class="text-2xl font-semibold text-gray-500 truncate lg:text-base">The Lord of the Rings</h2>
+          <span class="italic font-light text-gray-400 truncate lg:text-sm">J.R.R. Tolkien</span>
+          <div class="absolute left-0 flex justify-between w-full px-2 text-sm top-2">
+            <button class="hover:text-black focus:outline-none">
+              <svg
+                class="w-4 h-4"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+                >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+                  ></path>
+              </svg>
+            </button>
+            <span><span class="text-green-700">300</span>/300</span>
+          </div>
+        </div>
+      </div>
+    </main>
   </body>
 </html>
