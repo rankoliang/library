@@ -594,6 +594,45 @@ video {
   color: rgba(107, 114, 128, var(--tw-text-opacity));
 }
 
+.form-field {
+  --tw-border-opacity: 1;
+  border-color: rgba(209, 213, 219, var(--tw-border-opacity));
+}
+
+.form-field:focus {
+  --tw-border-opacity: 1;
+  border-color: rgba(31, 41, 55, var(--tw-border-opacity));
+}
+
+.form-field {
+  border-radius: 0.125rem;
+  border-width: 1px;
+}
+
+.form-field:focus {
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+}
+
+.form-field:focus::-moz-placeholder {
+  color: transparent;
+}
+
+.form-field:focus:-ms-input-placeholder {
+  color: transparent;
+}
+
+.form-field:focus::placeholder {
+  color: transparent;
+}
+
+.form-field {
+  --tw-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+  --tw-text-opacity: 1;
+  color: rgba(107, 114, 128, var(--tw-text-opacity));
+}
+
 .space-y-0 > :not([hidden]) ~ :not([hidden]) {
   --tw-space-y-reverse: 0;
   margin-top: calc(0px * calc(1 - var(--tw-space-y-reverse)));
@@ -31179,6 +31218,20 @@ video {
 .animate-bounce {
   -webkit-animation: bounce 1s infinite;
           animation: bounce 1s infinite;
+}
+
+/* Hides increment button on number inputs */
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+
+input[type="number"] {
+  -moz-appearance: textfield;
 }
 
 @media (min-width: 640px) {

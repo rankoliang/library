@@ -5,4 +5,21 @@
   @apply max-w-md p-4 text-center text-gray-500 bg-white border rounded-lg shadow-md;
 }
 
+.form-field {
+  @apply text-gray-500 border border-gray-300 rounded-sm focus:placeholder-transparent shadow-sm focus:outline-none focus:border-gray-800;
+}
+
 @tailwind utilities;
+
+/* Hides increment button on number inputs */
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type="number"] {
+  -moz-appearance: textfield;
+}
