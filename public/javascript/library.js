@@ -106,7 +106,7 @@ Book.prototype.subheader = function () {
 
 Book.prototype.buttons = function () {
   return `
-    <button class="hover:text-black focus:outline-none focus:text-black">
+    <button class="edit-book hover:text-black focus:outline-none focus:text-black">
       <svg
         class="w-4 h-4"
         fill="none"
@@ -122,7 +122,7 @@ Book.prototype.buttons = function () {
         ></path>
       </svg>
     </button>
-    <button class="ml-1 text-red-400 hover:text-red-600 focus:outline-none focus:text-red-600">
+    <button class="delete-book ml-1 text-red-400 hover:text-red-600 focus:outline-none focus:text-red-600">
       <svg
         class="w-4 h-4"
         fill="none"
@@ -161,8 +161,51 @@ Book.prototype.info = function () {
   `;
 };
 
-Book.prototype.card = function () {
-  return new Card(this).element;
+Book.prototype.card = function (index) {
+  const card = new Card(this).element;
+  if (!isNaN(index)) {
+    card.dataset.cardIndex = index;
+  }
+  return card;
+};
+
+Book.prototype.postInitializeCard = function (card) {
+  card.querySelector(".delete-book").addEventListener("click", () => {
+    if (!confirm(`Are you sure you want to delete ${this.title}?`)) {
+      return;
+    }
+    library.books.splice(card.dataset.cardIndex, 1);
+    library.render();
+  });
+
+  card.querySelector(".edit-book").addEventListener("click", () => {
+    const edit_form = new Form({
+      title: this.title,
+      author: this.author,
+      currentPage: this.currentPage,
+      numPages: this.numPages,
+    });
+
+    edit_form.configureButtons = function (card) {
+      card.querySelector("#cancel-submission").addEventListener("click", (e) => {
+        e.preventDefault();
+        library.render();
+      });
+
+      card.querySelector("form").addEventListener("submit", (e) => {
+        e.preventDefault();
+        for (const field of e.target.querySelectorAll("input")) {
+          library.books[card.dataset.cardIndex][field.name] = isNaN(field.value) ? field.value : Number(field.value);
+        }
+        library.render();
+      });
+    };
+    if (document.getElementById("new-book-form")) {
+      document.getElementById("new-book-form").remove();
+    }
+    books.insertBefore(edit_form.card(card.dataset.cardIndex), card);
+    card.remove();
+  });
 };
 
 // Library Class
@@ -204,9 +247,10 @@ Library.prototype.render = function () {
   while (books.childNodes.length > 2) {
     books.removeChild(books.lastChild);
   }
-  for (const book of this.books) {
-    books.appendChild(book.card());
+  for (const [i, book] of this.books.entries()) {
+    books.appendChild(book.card(i));
   }
+  this.updateProgress();
 };
 
 // Card class
@@ -221,11 +265,9 @@ function Card(content) {
     "border-2",
     content.colors ? content.colors()["border"] : "border-gray-300"
   );
-  if (typeof this.content.template === "function") {
-    this.element.innerHTML = this.content.template(this.template());
-  } else {
-    this.element.innerHTML = this.template();
-  }
+  this.element.innerHTML = (this.content.template && this.content.template(this.template())) || this.template();
+
+  this.content.postInitializeCard && this.content.postInitializeCard(this.element);
 }
 
 Card.prototype.template = function () {
@@ -246,7 +288,17 @@ Card.prototype.template = function () {
 
 // Form class
 
-function Form() {}
+function Form(values) {
+  this.values = Object.assign(
+    {
+      title: "",
+      author: "",
+      currentPage: 0,
+      numPages: 1,
+    },
+    values
+  );
+}
 
 Form.prototype.colors = function () {
   return {
@@ -265,6 +317,7 @@ Form.prototype.template = function (template) {
 Form.prototype.configurePageFields = function (card) {
   const currentPageField = card.querySelector("#current-page");
   const numPagesField = card.querySelector("#total-pages");
+  currentPageField.max = numPagesField.value;
   this.updateFieldWidth(currentPageField);
   this.updateFieldWidth(numPagesField);
 
@@ -276,19 +329,30 @@ Form.prototype.configurePageFields = function (card) {
     currentPageField.max = e.target.value;
     this.updateFieldWidth(e.target);
   });
+
+  [currentPageField, numPagesField].forEach((field) => {
+    field.addEventListener("keydown", (e) => {
+      if (e.keyCode === 13) {
+        e.preventDefault();
+        e.target.blur();
+      }
+    });
+  });
 };
 
 Form.prototype.configureButtons = function (card) {
   card.querySelector("#cancel-submission").addEventListener("click", (e) => {
     e.preventDefault();
-    card.remove();
+    if (confirm("You will lose your form progress. Are you sure?")) {
+      card.remove();
+    }
   });
 
   card.querySelector("form").addEventListener("submit", (e) => {
     e.preventDefault();
     const bookParams = {};
     for (const field of e.target.querySelectorAll("input")) {
-      bookParams[field.name] = field.value;
+      bookParams[field.name] = isNaN(field.value) ? field.value : Number(field.value);
     }
     const book = new Book(bookParams);
     library.addBook(book);
@@ -325,6 +389,7 @@ Form.prototype.header = function () {
         class="w-full text-xl font-semibold text-center text-gray-500 lg:text-base form-field"
         id="title"
         name="title"
+        value="${this.values.title}"
         required
       />
   `;
@@ -339,6 +404,7 @@ Form.prototype.subheader = function () {
         class="italic font-light text-center text-gray-400 truncate form-field lg:text-sm"
         id="author"
         name="author"
+        value="${this.values.author}"
         required
       />
   `;
@@ -348,7 +414,7 @@ Form.prototype.info = function () {
   return `
       <span class="flex items-center">
         <label for="current-page" class="hidden">Current page</label>
-        <input type="number" min="0" class="w-12 text-center form-field" id="current-page" value="0" name="currentPage"/>
+        <input type="number" min="0" class="w-12 text-center form-field" id="current-page" value="${this.values.currentPage}" name="currentPage"/>
         <label for="total-pages" class="hidden">Total pages</label>
         /<input
           type="number"
@@ -356,7 +422,7 @@ Form.prototype.info = function () {
           class="w-12 mr-1 text-center form-field"
           id="total-pages"
           name="numPages"
-          value="1"
+          value="${this.values.numPages}"
         />
       </span>
   `;
@@ -396,12 +462,19 @@ Form.prototype.buttons = function () {
       </button>`;
 };
 
-Form.prototype.card = function () {
-  const card = new Card(this).element;
+Form.prototype.card = function (index) {
+  const form_card = new Card(this).element;
+  if (!isNaN(index)) {
+    form_card.dataset.cardIndex = index;
+  }
+
+  return form_card;
+};
+
+Form.prototype.postInitializeCard = function (card) {
   card.id = "new-book-form";
   this.configurePageFields(card);
   this.configureButtons(card);
-  return card;
 };
 
 Form.prototype.updateFieldWidth = function (field) {
@@ -417,23 +490,3 @@ newBookButton.addEventListener("click", () => {
   books.appendChild(new Form().card());
   window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
 });
-
-const book = new Book({
-  title: "LOTR",
-  author: "J.R.R. Tolkien",
-  numPages: 400,
-  currentPage: 400,
-});
-library.addBook(book);
-
-for (let i = 0; i < 2; i++) {
-  const book = new Book({
-    title: "LOTR",
-    author: "J.R.R. Tolkien",
-    numPages: 400,
-    currentPage: Math.round(Math.random() * 400),
-  });
-  library.addBook(book);
-}
-
-library.render();
