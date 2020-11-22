@@ -197,6 +197,7 @@ Book.prototype.postInitializeCard = function (card) {
         for (const field of e.target.querySelectorAll("input")) {
           library.books[card.dataset.cardIndex][field.name] = isNaN(field.value) ? field.value : Number(field.value);
         }
+        localStorage.books = JSON.stringify(library.books);
         library.render();
       });
     };
@@ -211,7 +212,7 @@ Book.prototype.postInitializeCard = function (card) {
 // Library Class
 
 function Library() {
-  if (localStorage.books) {
+  if (localStorage.getItem("books")) {
     this.books = JSON.parse(localStorage.books).map((book_params) => new Book(book_params));
   } else {
     this.books = [];
