@@ -6,7 +6,7 @@ function Book(params) {
 }
 
 Book.prototype.progress = function () {
-  return ((this.currentPage * 100.0) / this.numPages).toFixed(2);
+  return (this.currentPage * 100.0) / this.numPages;
 };
 
 Book.prototype.updateProgress = function (pagesRead) {
@@ -25,15 +25,50 @@ Book.prototype.read = function () {
   return this.currentPage === this.numPages;
 };
 
-Book.prototype.cardHTML = function (colors) {
-  colors = Object.assign(
+Book.prototype.progressColors = function () {
+  const breakpoints = [10, 35, 85, 100];
+  const defaultColor = {
+    border: "border-gray-300",
+    bookmark: "text-gray-400",
+  };
+
+  const colors = [
+    defaultColor,
     {
-      border: "border-gray-300",
-      bookmark: "text-gray-400",
-      book: "",
+      border: "border-yellow-300",
+      bookmark: "text-yellow-400",
     },
-    colors
-  );
+    {
+      border: "border-yellow-600",
+      bookmark: "text-yellow-700",
+    },
+    {
+      border: "border-green-300",
+      bookmark: "text-green-400",
+    },
+    {
+      border: "border-green-500",
+      bookmark: "text-green-700",
+      book: "text-green-600",
+    },
+  ];
+
+  const progress = this.progress();
+
+  for (const [i, breakpoint] of breakpoints.entries()) {
+    if (progress < breakpoint) {
+      return colors[i];
+    }
+  }
+  if (this.currentPage === this.numPages) {
+    return colors[colors.length - 1];
+  } else {
+    return defaultColor;
+  }
+};
+
+Book.prototype.cardHTML = function () {
+  const colors = this.progressColors();
   const book_card = document.createElement("div");
   book_card.classList.add("relative", "pb-6", colors["border"], "card");
   book_card.innerHTML = `
@@ -116,6 +151,7 @@ function Library() {
 
 Library.prototype.addBook = function (book) {
   this.books.push(book);
+  updateLibraryProgress();
 };
 
 Library.prototype.booksRead = function () {
@@ -137,19 +173,28 @@ Library.prototype.totalPages = function () {
 };
 
 Library.prototype.progress = function () {
-  return ((this.pagesRead() * 100.0) / this.totalPages()).toFixed(2);
+  if (this.totalPages() <= 0) {
+    return 0;
+  }
+  return Math.round((this.pagesRead() * 100.0) / this.totalPages());
 };
 
 const newBookButton = document.querySelector("#new-book");
 const books = document.querySelector("#books");
+const progress = document.querySelector("#progress");
 const library = new Library();
+
+const updateLibraryProgress = () => {
+  progress.textContent = `${library.progress()}%`;
+};
 
 const newForm = () => {
   if (document.getElementById("new-book-form")) {
+    window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
     return;
   }
   const form_card = document.createElement("div");
-  form_card.classList.add("relative", "pb-6", "border-gray-300", "card");
+  form_card.classList.add("relative", "pb-6", "border-gray-600", "card", "border-2");
   form_card.innerHTML = `
     <form>
         <svg
@@ -265,6 +310,7 @@ const newForm = () => {
   });
   form_card.id = "new-book-form";
   books.appendChild(form_card);
+  window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
 };
 
 function updateFieldWidth(field) {
@@ -272,3 +318,22 @@ function updateFieldWidth(field) {
 }
 
 newBookButton.addEventListener("click", newForm);
+const book = new Book({
+  title: "LOTR",
+  author: "J.R.R. Tolkien",
+  numPages: 400,
+  currentPage: 400,
+});
+library.addBook(book);
+books.appendChild(book.cardHTML());
+
+for (let i = 0; i < 20; i++) {
+  const book = new Book({
+    title: "LOTR",
+    author: "J.R.R. Tolkien",
+    numPages: 400,
+    currentPage: Math.round(Math.random() * 400),
+  });
+  library.addBook(book);
+  books.appendChild(book.cardHTML());
+}
