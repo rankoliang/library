@@ -211,7 +211,11 @@ Book.prototype.postInitializeCard = function (card) {
 // Library Class
 
 function Library() {
-  this.books = JSON.parse(localStorage.books).map((book_params) => new Book(book_params)) || [];
+  if (localStorage.books) {
+    this.books = JSON.parse(localStorage.books).map((book_params) => new Book(book_params));
+  } else {
+    this.books = [];
+  }
 }
 
 Library.prototype.addBook = function (book) {
