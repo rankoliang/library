@@ -211,11 +211,12 @@ Book.prototype.postInitializeCard = function (card) {
 // Library Class
 
 function Library() {
-  this.books = [];
+  this.books = JSON.parse(localStorage.books).map((book_params) => new Book(book_params)) || [];
 }
 
 Library.prototype.addBook = function (book) {
   this.books.push(book);
+  localStorage.books = JSON.stringify(this.books);
   this.updateProgress();
 };
 
@@ -490,3 +491,5 @@ newBookButton.addEventListener("click", () => {
   books.appendChild(new Form().card());
   window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
 });
+
+library.render();
