@@ -76,89 +76,73 @@ Book.prototype.colors = function () {
 };
 
 Book.prototype.image = function () {
-  return `
-    <svg
-      class="h-48 m-auto ${this.colors()["book"]}"
-      xmlns="http://www.w3.org/2000/svg"
-      fill="none"
-      viewBox="0 0 24 24"
-      stroke="currentColor"
-    >
-      <path
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        stroke-width="2"
-        d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
-      />
-    </svg>
-  `;
+  // returns an svg of a book
+  return createSVG(
+    ["h-48", "m-auto", this.colors()["book"]],
+    "M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
+  );
 };
 
 Book.prototype.header = function () {
-  return `
-    <h2 class="text-2xl font-semibold text-gray-500 truncate lg:text-base">${this.title}</h2>
-  `;
+  const header = document.createElement("h2");
+  header.classList.add("text-2xl", "font-semibold", "text-gray-500", "truncate", "lg-text-base");
+  header.textContent = this.title;
+  return header;
 };
 
 Book.prototype.subheader = function () {
-  return `<span class="italic font-light text-gray-400 truncate lg:text-sm">${this.author}</span>`;
+  const subheader = document.createElement("span");
+  subheader.classList.add("italic", "font-light", "text-gray-400", "truncate", "lg:text-sm");
+  subheader.textContent = this.author;
+  return subheader;
 };
 
 Book.prototype.buttons = function () {
-  return `
-    <button class="edit-book hover:text-black focus:outline-none focus:text-black">
-      <svg
-        class="w-4 h-4"
-        fill="none"
-        stroke="currentColor"
-        viewBox="0 0 24 24"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <path
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="2"
-          d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
-        ></path>
-      </svg>
-    </button>
-    <button class="delete-book ml-1 text-red-400 hover:text-red-600 focus:outline-none focus:text-red-600">
-      <svg
-        class="w-4 h-4"
-        fill="none"
-        stroke="currentColor"
-        viewBox="0 0 24 24"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <path
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="2"
-          d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-        ></path>
-      </svg>
-    </button>
-  `;
+  const buttons = document.createElement("div");
+  buttons.classList.add("flex", "items-center", "h-auto");
+  const editButton = document.createElement("button");
+  editButton.classList.add("edit-book", "hover:text-black", "focus:outline-none", "focus:text-black");
+  const editButtonIcon = createSVG(
+    ["w-4", "h-4"],
+    "M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+  );
+  editButton.appendChild(editButtonIcon);
+  const deleteButton = document.createElement("button");
+  deleteButton.classList.add(
+    "delete-book",
+    "ml-1",
+    "text-red-400",
+    "hover:text-red-600",
+    "focus:outline-none",
+    "focus:text-text-red-600"
+  );
+  const trashIcon = createSVG(
+    ["w-4", "h-4"],
+    "M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+  );
+  deleteButton.appendChild(trashIcon);
+  buttons.appendChild(editButton);
+  buttons.appendChild(deleteButton);
+
+  return buttons;
 };
 
 Book.prototype.info = function () {
-  return `
-    <svg
-      class="w-5 h-5 mr-1 ${this.colors()["bookmark"]}"
-      fill="none"
-      stroke="currentColor"
-      viewBox="0 0 24 24"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <path
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        stroke-width="2"
-        d="M16 4v12l-4-2-4 2V4M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
-      ></path>
-    </svg>
-    ${this.currentPage}/${this.numPages}
-  `;
+  const info = document.createElement("span");
+  info.classList.add("flex", "items-center");
+
+  info.appendChild(
+    createSVG(
+      ["w-5", "h-5", "mr-1", this.colors()["bookmark"]],
+      "M16 4v12l-4-2-4 2V4M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
+    )
+  );
+
+  const progress = document.createElement("span");
+  progress.textContent = `${this.currentPage}/${this.numPages}`;
+
+  info.appendChild(progress);
+  return info;
 };
 
 Book.prototype.card = function (index) {
@@ -189,7 +173,9 @@ Book.prototype.postInitializeCard = function (card) {
     edit_form.configureButtons = function (card) {
       card.querySelector("#cancel-submission").addEventListener("click", (e) => {
         e.preventDefault();
-        library.render();
+        if (confirm("You will lose your form progress. Are you sure?")) {
+          library.render();
+        }
       });
 
       card.querySelector("form").addEventListener("submit", (e) => {
@@ -241,7 +227,7 @@ Library.prototype.progress = function () {
   if (this.totalPages() <= 0) {
     return 0;
   }
-  return Math.round((this.pagesRead() * 100.0) / this.totalPages());
+  return Math.floor((this.pagesRead() * 100.0) / this.totalPages());
 };
 
 Library.prototype.updateProgress = function () {
@@ -271,25 +257,35 @@ function Card(content) {
     "border-2",
     content.colors ? content.colors()["border"] : "border-gray-300"
   );
-  this.element.innerHTML = (this.content.template && this.content.template(this.template())) || this.template();
-
+  this.init();
   this.content.postInitializeCard && this.content.postInitializeCard(this.element);
 }
 
-Card.prototype.template = function () {
-  return `
-    ${this.content.image()}
-    ${this.content.header()}
-    ${this.content.subheader()}
-    <div class="absolute left-0 flex flex-row-reverse items-center justify-between w-full px-2 text-sm top-2">
-      <span class="flex items-center">
-        ${this.content.info()}
-      </span>
-      <div class="flex items-center h-auto">
-        ${this.content.buttons()}
-      </div>
-    </div>
-  `;
+Card.prototype.init = function () {
+  this.element.appendChild(this.content.image());
+  this.element.appendChild(this.content.header());
+  this.element.appendChild(this.content.subheader());
+
+  const topContainer = document.createElement("div");
+  topContainer.classList.add(
+    "absolute",
+    "left-0",
+    "flex",
+    "flex-row-reverse",
+    "items-center",
+    "justify-between",
+    "w-full",
+    "px-2",
+    "text-sm",
+    "top-2"
+  );
+  this.element.appendChild(topContainer);
+
+  topContainer.appendChild(this.content.info());
+
+  topContainer.appendChild(this.content.buttons());
+
+  return this.element;
 };
 
 // Form class
@@ -310,14 +306,6 @@ Form.prototype.colors = function () {
   return {
     border: "border-gray-500",
   };
-};
-
-Form.prototype.template = function (template) {
-  return `
-    <form>
-      ${template}
-    </form>
-  `;
 };
 
 Form.prototype.configurePageFields = function (card) {
@@ -368,104 +356,133 @@ Form.prototype.configureButtons = function (card) {
 };
 
 Form.prototype.image = function () {
-  return `
-      <svg
-        class="h-48 m-auto"
-        xmlns="http://www.w3.org/2000/svg"
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke="currentColor"
-      >
-        <path
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="2"
-          d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
-        />
-      </svg>
-  `;
+  // returns an svg of a book
+  return createSVG(
+    ["h-48", "m-auto"],
+    "M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
+  );
+};
+Form.prototype.image = function () {
+  return createSVG(
+    ["h-48", "m-auto"],
+    "M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
+  );
 };
 
 Form.prototype.header = function () {
-  return `
-      <label for="title" class="hidden">Title</label>
-      <input
-        type="text"
-        placeholder="Title"
-        class="w-full text-xl font-semibold text-center text-gray-500 lg:text-base form-field"
-        id="title"
-        name="title"
-        value="${this.values.title}"
-        required
-      />
-  `;
+  const header = document.createElement("div");
+  const label = document.createElement("label");
+  label.setAttribute("for", "title");
+  label.classList.add("hidden");
+  label.textContent = "Title";
+
+  header.appendChild(label);
+
+  const headerField = document.createElement("input");
+  headerField.type = "text";
+  headerField.placeholder = "Title";
+  headerField.id = "title";
+  headerField.name = "title";
+  headerField.value = this.values.title;
+  headerField.required = true;
+  headerField.classList.add(
+    "w-full",
+    "text-xl",
+    "font-semibold",
+    "text-center",
+    "text-gray-500",
+    "lg:text-base",
+    "form-field"
+  );
+
+  header.appendChild(headerField);
+
+  return header;
 };
 
 Form.prototype.subheader = function () {
-  return `
-      <label for="author" class="hidden">Author</label>
-      <input
-        type="text"
-        placeholder="author"
-        class="italic font-light text-center text-gray-400 truncate form-field lg:text-sm"
-        id="author"
-        name="author"
-        value="${this.values.author}"
-        required
-      />
-  `;
+  const subheader = document.createElement("div");
+  const label = document.createElement("label");
+  label.setAttribute("for", "author");
+  label.classList.add("hidden");
+  label.textContent = "Author";
+
+  subheader.appendChild(label);
+
+  const headerField = document.createElement("input");
+  headerField.type = "text";
+  headerField.placeholder = "Author";
+  headerField.id = "author";
+  headerField.name = "author";
+  headerField.value = this.values.author;
+  headerField.required = true;
+  headerField.classList.add(
+    "italic",
+    "font-light",
+    "text-center",
+    "text-gray-400",
+    "truncate",
+    "form-field",
+    "lg:text-sm"
+  );
+
+  subheader.appendChild(headerField);
+
+  return subheader;
 };
 
 Form.prototype.info = function () {
-  return `
-      <span class="flex items-center">
-        <label for="current-page" class="hidden">Current page</label>
-        <input type="number" min="0" class="w-12 text-center form-field" id="current-page" value="${this.values.currentPage}" name="currentPage"/>
-        <label for="total-pages" class="hidden">Total pages</label>
-        /<input
-          type="number"
-          min="1"
-          class="w-12 mr-1 text-center form-field"
-          id="total-pages"
-          name="numPages"
-          value="${this.values.numPages}"
-        />
-      </span>
-  `;
+  const info = document.createElement("span");
+  info.classList.add("flex", "items-center");
+  const currentPageField = field({
+    id: "current-page",
+    name: "currentPage",
+    labelContent: "Current page",
+    inputClasses: ["w-12", "text-center", "form-field"],
+    placeholder: "Author",
+    value: this.values.currentPage,
+  });
+
+  info.appendChild(currentPageField);
+  info.appendChild(document.createTextNode("/"));
+
+  const totalPageField = field({
+    id: "total-pages",
+    name: "numPages",
+    labelContent: "Current page",
+    inputClasses: ["w-12", "mr-1", "text-center", "form-field"],
+    value: this.values.numPages,
+  });
+
+  info.appendChild(totalPageField);
+
+  return info;
 };
 
 Form.prototype.buttons = function () {
-  return `
-      <button
-        class="text-green-400 cursor-pointer hover:text-green-600 focus:text-green-600 focus:outline-none"
-        id="submit-book"
-        >
-        <svg
-          class="w-5 h-5"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-          xmlns="http://www.w3.org/2000/svg"
-          >
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-        </svg>
-      </button>
-      <button class="text-red-400 focus:outline-none focus:text-red-600 hover:text-red-600" id="cancel-submission">
-        <svg
-          class="w-5 h-5"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M6 18L18 6M6 6l12 12"
-          ></path>
-        </svg>
-      </button>`;
+  const buttons = document.createElement("div");
+  buttons.classList.add("flex", "items-center", "h-auto");
+
+  const submitBook = document.createElement("button");
+  submitBook.classList.add(
+    "text-green-400",
+    "cursor-pointer",
+    "hover:text-green-600",
+    "focus:text-green-600",
+    "focus:outline-none"
+  );
+  submitBook.id = "submit-book";
+  submitBook.appendChild(createSVG(["w-5", "h-5"], "M5 13l4 4L19 7"));
+
+  const cancelSubmission = document.createElement("button");
+  cancelSubmission.classList.add("text-red-400", "focus:outline-none", "focus:text-red-600", "hover:text-red-600");
+  cancelSubmission.id = "cancel-submission";
+  cancelSubmission.appendChild(createSVG(["w-5", "h-5"], "M6 18L18 6M6 6l12 12"));
+
+  buttons.appendChild(submitBook);
+  buttons.appendChild(cancelSubmission);
+
+  return buttons;
 };
 
 Form.prototype.card = function (index) {
@@ -479,6 +496,12 @@ Form.prototype.card = function (index) {
 
 Form.prototype.postInitializeCard = function (card) {
   card.id = "new-book-form";
+  const formWrapper = document.createElement("form");
+  while (card.childNodes.length > 0) {
+    const node = card.firstElementChild;
+    formWrapper.appendChild(node);
+  }
+  card.appendChild(formWrapper);
   this.configurePageFields(card);
   this.configureButtons(card);
 };
@@ -486,6 +509,47 @@ Form.prototype.postInitializeCard = function (card) {
 Form.prototype.updateFieldWidth = function (field) {
   field.style.width = `${Math.max(field.value.length + 1, 2)}ch`;
 };
+
+function createSVG(classList, pathCommands) {
+  const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+  svg.classList.add(...classList);
+  console.log(svg.classList);
+  svg.setAttribute("fill", "none");
+  svg.setAttribute("stroke", "currentColor");
+  svg.setAttribute("viewBox", "0 0 24 24");
+  svg.setAttribute("xmlns", "http://www.w3.org/2000/svg");
+  const svgPath = document.createElementNS("http://www.w3.org/2000/svg", "path");
+  svgPath.setAttribute("stroke-linecap", "round");
+  svgPath.setAttribute("stroke-linejoin", "round");
+  svgPath.setAttribute("stroke-width", "2");
+  svgPath.setAttribute("d", pathCommands);
+
+  svg.appendChild(svgPath);
+
+  return svg;
+}
+
+function field(params) {
+  const fieldContainer = document.createElement("div");
+
+  const label = document.createElement("label");
+  label.setAttribute("for", params.id);
+  label.classList.add("hidden");
+  label.textContent = params.labelContent;
+
+  const field = document.createElement("input");
+  field.type = "text";
+  field.name = params.name;
+  field.id = params.id;
+  field.required = true;
+  field.placeholder = params.placeholder;
+  field.value = params.value;
+
+  field.classList.add(...params.inputClasses);
+  fieldContainer.appendChild(label);
+  fieldContainer.appendChild(field);
+  return fieldContainer;
+}
 
 newBookButton.addEventListener("click", () => {
   if (document.getElementById("new-book-form")) {
